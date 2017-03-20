@@ -16,6 +16,8 @@ import urllib
 import qrcode
 import pdir
 
+from core import parse_command
+
 now = lambda : int(time.time())
 
 
@@ -29,6 +31,7 @@ headers = {
     'accept-language': 'zh-CN,zh;q=0.8,en-US;q=0.6,en;q=0.4',
     'cache-control': 'max-age=0',
     'host': 'login.wx.qq.com',
+    'content-type': 'application/json; charset=UTF-8',
     'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36',
 }
 
@@ -47,14 +50,12 @@ class WechatBot(object):
         self.sid = None
         self.uin = None
         self.pass_ticket = None
-        self.device_id = None
+        self.device_id = 'e' + repr(random.random())[2:17]
 
         self.base_request = None
 
         self.sync_key = None
         self.sync_key_str = None
-
-        self.params = {}
 
     def get_uuid(self):
         params = {
@@ -75,7 +76,6 @@ class WechatBot(object):
         raise
 
     def get_qr_code(self):
-        print self.uuid
         string = 'https://login.weixin.qq.com/l/' + self.uuid
         img = qrcode.make(string)
         img_in_memory = io.BytesIO()
@@ -84,7 +84,7 @@ class WechatBot(object):
         files = {'smfile': img_in_memory}
         resp = requests.post(UPLOAD_IMG, files=files)
         qr_code_url = json.loads(resp.content)['data']['url']
-        print qr_code_url
+        print 'open this url to scan qrcode: ', qr_code_url
         return qr_code_url
 
     def login(self):
@@ -103,7 +103,6 @@ class WechatBot(object):
             if code == '201':
                 tip = 0
             elif code == '200':
-                print 'get_redirect_url'
                 redirect_urls = re.search(r'\"(?P<redirect_url>.*)\"', resp.content)
                 if redirect_urls:
                     redirect_url = redirect_urls.group('redirect_url') + '&fun=new'
@@ -137,7 +136,7 @@ class WechatBot(object):
         url = self.base_uri + '/webwxinit?r=%i&lang=en_US&pass_ticket=%s' % (now(), self.pass_ticket)
  
         self.base_request = {
-            'Uin': self.uin,
+            'Uin': int(self.uin),
             'Sid': self.sid,
             'Skey': self.skey,
             'DeviceID': self.device_id,
@@ -170,16 +169,14 @@ class WechatBot(object):
         }
 
         url = 'https://' + self.sync_host + '/cgi-bin/mmwebwx-bin/synccheck?' + urllib.urlencode(params)
-        print url
         for i in range(10):
             try:
-                r = self.session.get(url, timeout=5)
+                r = self.session.get(url, timeout=20)
                 r.encoding = 'utf-8'
                 data = r.text
                 pm = re.search(r'window.synccheck=\{retcode:"(\d+)",selector:"(\d+)"\}', data)
                 retcode = pm.group(1)
                 selector = pm.group(2)
-                print 'sync_check: ', retcode, selector
                 return [retcode, selector]
             except requests.exceptions.ReadTimeout:
                 # FIXME
@@ -192,9 +189,7 @@ class WechatBot(object):
             self.sync_host = host1 + self.base_host
             try:
                 retcode, selector = self.sync_check()
-                print retcode, selector
                 if retcode == '0':
-                    print 'choose host: ', self.sync_host
                     return True
             except Exception as e:
                 print e
@@ -214,24 +209,63 @@ class WechatBot(object):
             if dic['BaseResponse']['Ret'] == 0:
                 self.sync_key = dic['SyncKey']
                 self.sync_key_str = '|'.join(str(data['Key']) + '_' + str(data['Val']) for data in self.sync_key['List'])
-                print 'update sync_key', self.sync_key_str
             return dic
         except Exception:
             raise
 
     def proc_msg(self):
-        print 'sync_host_check'
         self.sync_host_check()
-        print 'sync_host_check passed'
 
         while True:
             check_time = now()
             [retcode, selector] = self.sync_check()
-            print retcode, selector
-            self.sync()
+            msg = self.sync()
+            self.handle_msg(msg)
             check_time = now() - check_time
             if check_time < 0.8:
                 time.sleep(0.8 - check_time)
+
+    def handle_msg(self, msgs):
+        """
+        """
+        for msg in msgs["AddMsgList"]:
+            if not msg['Content'] or not msg['Content'].startswith('!'):
+                continue
+            reply = {
+                'BaseRequest': self.base_request,
+                'Msg': {
+                    'Type': 1,
+                    'Content': parse_command(msg['Content']),
+                    'FromUserName': msg['ToUserName'],
+                    'ToUserName': msg['FromUserName']
+                },
+                'Scene': msg['RecommendInfo']['Scene']
+            }
+            self.send_msg(reply)
+
+    def send_msg(self, reply):
+        url = self.base_uri + '/webwxsendmsg'
+        msg_id = str(now() * 1000) + str(random.random())[:5].replace('.', '')
+        reply['Msg'].update({'LocalId': msg_id, 'ClientMsgId': msg_id})
+        data = json.dumps(reply, ensure_ascii=False).encode('utf-8')
+        for i in range(5):
+            #  i haven't figured out, but you have to do this...
+            headers = {
+                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'accept-encoding': 'gzip, deflate, br',
+                'accept-language': 'zh-CN,zh;q=0.8,en-US;q=0.6,en;q=0.4',
+                'cache-control': 'max-age=0',
+                'content-type': 'application/json; charset=UTF-8',
+                'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36',
+            }
+            try:
+                r = self.session.post(url, data=data, headers=headers)
+            except (requests.exceptions.ConnectTimeout , requests.exceptions.ReadTimeout):
+                pass
+            if r.status_code == 200:
+                return
+        raise
+
 
     def run(self):
         bot.get_uuid()
@@ -239,7 +273,6 @@ class WechatBot(object):
         bot.login()
         bot.init()
         bot.proc_msg()
-
 
 if __name__ == "__main__":
     bot = WechatBot()

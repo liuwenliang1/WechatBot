@@ -6,25 +6,8 @@ e-mail: chuanwusun at gmail.com
 """
 import json
 
-from flask import render_template
-from flask_restful import Api
-
-from wsgi import application
-from views import HelloWorld
-from spiders.api import V2EX
 from models import redis_client
-from consts import ALL_KEYWORDS
 from tools import guess
-
-api = Api(application)
-api.add_resource(HelloWorld, '/')
-api.add_resource(V2EX, '/v2ex')
-
-@application.route("/")
-def index():
-    page_name = 'index'
-    keywords = redis_client.smembers(ALL_KEYWORDS)
-    return render_template('%s.html' % page_name, keywords = keywords)
 
 func_map = {
     'ping': lambda args: ping(args),
@@ -97,6 +80,4 @@ def fetch_hacker():
     return ret
 
 if __name__ == '__main__':
-    import sys
-    args = sys.argv
-    application.run(host="0.0.0.0", port=args[1] if len(args) >= 2 else 5000)
+    pass
