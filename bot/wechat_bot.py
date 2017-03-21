@@ -14,7 +14,6 @@ import xml.dom.minidom
 import urllib
 
 import qrcode
-import pdir
 
 from core import parse_command
 
