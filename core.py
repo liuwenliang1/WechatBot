@@ -11,8 +11,8 @@ from tools import guess
 
 func_map = {
     'ping': lambda args: ping(args),
-    'set':  lambda args: set(args),
-    'get':  lambda args: get(args),
+    'set': lambda args: set(args),
+    'get': lambda args: get(args),
     'v2ex': lambda args: v2ex(args),
     'hacker': lambda args: hacker(args)
 }
@@ -22,10 +22,9 @@ def parse_command(text):
     if text.startswith('!'):
         text = text[1:]
         command, args = text.split(' ', 1) if ' ' in text else (text, '')
-        print '\n'
-        print text, command, args
         if command in func_map:
             return func_map[command](args)
+        return 'sorry, command not found.'
 
 
 def smembers(key):

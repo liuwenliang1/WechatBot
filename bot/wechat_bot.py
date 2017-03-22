@@ -12,10 +12,14 @@ import time
 import re
 import xml.dom.minidom
 import urllib
+import sys
 
 import qrcode
 
 from core import parse_command
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 now = lambda : int(time.time())
 
@@ -168,7 +172,7 @@ class WechatBot(object):
         }
 
         url = 'https://' + self.sync_host + '/cgi-bin/mmwebwx-bin/synccheck?' + urllib.urlencode(params)
-        for i in range(10):
+        while True:
             try:
                 r = self.session.get(url, timeout=20)
                 r.encoding = 'utf-8'
@@ -178,8 +182,8 @@ class WechatBot(object):
                 selector = pm.group(2)
                 return [retcode, selector]
             except requests.exceptions.ReadTimeout:
-                # FIXME
-                print 'timeout'
+                # This is a normal response. Just ignore this exception.
+                pass
             except:
                 raise
 
@@ -219,7 +223,10 @@ class WechatBot(object):
             check_time = now()
             [retcode, selector] = self.sync_check()
             msg = self.sync()
-            self.handle_msg(msg)
+            try:
+                self.handle_msg(msg)
+            except Exception as e:
+                print e
             check_time = now() - check_time
             if check_time < 0.8:
                 time.sleep(0.8 - check_time)
@@ -228,6 +235,9 @@ class WechatBot(object):
         """
         """
         for msg in msgs["AddMsgList"]:
+            # support group message temporally
+            if ':<br/>!' in msg['Content']:
+                _, msg['Content'] = msg['Content'].split('<br/>', 1)
             if not msg['Content'] or not msg['Content'].startswith('!'):
                 continue
             reply = {
@@ -240,26 +250,31 @@ class WechatBot(object):
                 },
                 'Scene': msg['RecommendInfo']['Scene']
             }
-            self.send_msg(reply)
+            try:
+                self.send_msg(reply)
+            except Exception as e:
+                reply['Msg']['Content'] = 'error occurs: {}'.format(e)
+                self.send_msg(reply)
 
     def send_msg(self, reply):
         url = self.base_uri + '/webwxsendmsg'
         msg_id = str(now() * 1000) + str(random.random())[:5].replace('.', '')
         reply['Msg'].update({'LocalId': msg_id, 'ClientMsgId': msg_id})
         data = json.dumps(reply, ensure_ascii=False).encode('utf-8')
+        # i assume, the host option is used to route. So, you have to remove host before post request
+        headers = {
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'accept-encoding': 'gzip, deflate, br',
+            'accept-language': 'zh-CN,zh;q=0.8,en-US;q=0.6,en;q=0.4',
+            'cache-control': 'max-age=0',
+            'content-type': 'application/json; charset=UTF-8',
+            'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36',
+        }
         for i in range(5):
             #  i haven't figured out, but you have to do this...
-            headers = {
-                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'accept-encoding': 'gzip, deflate, br',
-                'accept-language': 'zh-CN,zh;q=0.8,en-US;q=0.6,en;q=0.4',
-                'cache-control': 'max-age=0',
-                'content-type': 'application/json; charset=UTF-8',
-                'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36',
-            }
             try:
                 r = self.session.post(url, data=data, headers=headers)
-            except (requests.exceptions.ConnectTimeout , requests.exceptions.ReadTimeout):
+            except (requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
                 pass
             if r.status_code == 200:
                 return
