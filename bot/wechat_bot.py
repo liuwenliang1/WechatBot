@@ -17,6 +17,7 @@ import sys
 import qrcode
 
 from core import parse_command
+from tinker import logger
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -87,7 +88,8 @@ class WechatBot(object):
         files = {'smfile': img_in_memory}
         resp = requests.post(UPLOAD_IMG, files=files)
         qr_code_url = json.loads(resp.content)['data']['url']
-        print 'open this url to scan qrcode: ', qr_code_url
+        hint = 'open this url to scan qrcode: {} '.format(qr_code_url)
+        logger.info(hint)
         return qr_code_url
 
     def login(self):
@@ -195,7 +197,7 @@ class WechatBot(object):
                 if retcode == '0':
                     return True
             except Exception as e:
-                print e
+                logger.error(e)
         raise
 
     def sync(self):
@@ -226,7 +228,7 @@ class WechatBot(object):
             try:
                 self.handle_msg(msg)
             except Exception as e:
-                print e
+                logger.error(e)
             check_time = now() - check_time
             if check_time < 0.8:
                 time.sleep(0.8 - check_time)
