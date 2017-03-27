@@ -4,15 +4,12 @@ author: chuanwu.sun
 created: 2017-03-10 19:41
 e-mail: chuanwusun at gmail.com
 """
-import unittest
+from core import r
+from exc import TinkerUserExceptioin
 
-from core import (
-    ping
-)
 
-class Ping(unittest.TestCase):
-    def test_ping(self):
-        self.assertEqual(ping(), 'pong')
+def test_ping_case():
+    assert r.call_method('ping') == 'pong'
 
 if __name__ == '__main__':
     pass

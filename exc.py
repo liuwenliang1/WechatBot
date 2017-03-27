@@ -10,27 +10,35 @@ from enum import Enum
 class TinkerErrorCode(Enum):
 
     MISSING_PARAMETER = 0
+    UNKNOWN_COMMAND = 1
+    RESERVED_COMMAND = 2
 
 
 TRANSLATIONS = {
-    TinkerErrorCode.MISSING_PARAMETER : u'缺少参数'
+    TinkerErrorCode.MISSING_PARAMETER: u'you may omit some parameter',
+    TinkerErrorCode.UNKNOWN_COMMAND: u'sorry, i can not understand.',
+    TinkerErrorCode.RESERVED_COMMAND: u'sorry, this command is a reserved keyword.'
 }
 
 
-class TinkerSystemException(Exception):
+class TinkerException(Exception):
 
     def __init__(self, err_code, err_msg=None):
         self.err_code = err_code
         self.err_msg = err_msg
+
     def __str__(self):
-        print repr(self.err_code, self.err_msg if self.err_msg else
-            TRANSLATIONS[self.err_msg])
+        return repr(self.err_msg if self.err_msg else
+                    TRANSLATIONS[self.err_code])
 
 
-def generate_user_exc(err_code, err_msg=None):
-    """ Generate UserException which error message shall be show to user.
+class TinkerUserExceptioin(TinkerException):
+    pass
 
-    :param err_code: Error code
-    :return: UserException instance
-    """
-    return TinkerSystemException(err_code, err_msg)
+
+class TinkerSystemException(TinkerException):
+    pass
+
+
+class TinkerServerException(TinkerException):
+    pass
