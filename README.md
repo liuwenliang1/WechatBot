@@ -1,6 +1,8 @@
 # Tinker
+![tinker](https://travis-ci.org/chuanwu/Tinker.svg?branch=master)
 
 *Tinker* is a wechat bot built for chatops. 
+
 
 ### Feature
 
