@@ -9,68 +9,46 @@
 - [x] 群消息回复
 - [x] 联系人消息回复
 - [ ] 命令支持正则匹配
+- [ ] cron消息提醒
+- [ ] @某人或者全部
+
 
 ### Quick Start
 
 1. 安装pip
 
-   如果已经安装pip，请跳至第二步
-
-   - Mac
-
-     ```
-     easy_install pip
-     ```
-
-   - Ubuntu
-
-     ```
-     apt-get install python-pip python-dev build-essential
-     ```
-
-   - CentOS
-
-     ```
-     yum -y install python-pip
-     ```
-
-2. 安装并启动redis
-
-   请按照该[文档](https://redis.io/topics/quickstart)安装redis。
-
-3. 安装依赖
+2. 安装依赖并运行测试脚本
 
    ```
-   make install
+   make test
    ```
 
-4. 配置main.ini
-
-   ```
-   cp example.main.ini main.ini
-   # 请更新该配置文件
-   vim main.ini
-   ```
-
-5. 启动bot
+3. 启动bot
 
    ```
    make mybot
    ```
 
-6. 查看更多选项
+4. 查看更多选项
 
    ```
    make help
    ```
 
+5. 功能开发
+
+ 将你所实现的程序放到plugin/目录下，并使用该装饰器即可。
+
+ ```
+ @r.register('COMMAND_STRING')
+ ```
+
+ 具体细节请看`plugin/ping_demo.py`。
+
+### Docs
+
+For more details, you may like [reading the docs](http://tinker.readthedocs.io/).
+
 ### Usage
 
 ![WeChat](https://ooo.0o0.ooo/2017/03/21/58d00a410a12d.jpeg)
-
-
-
-
-
-
-

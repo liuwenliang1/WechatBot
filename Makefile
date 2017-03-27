@@ -11,6 +11,7 @@ install:
 
 test: install
 	pytest
+	make clean
 
 clean:
 	find . \( -name "*.pyc" -o -name "*.log" -o -name "*.swp" -o -name "*.swo" \) -delete
