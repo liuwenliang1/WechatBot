@@ -9,6 +9,7 @@ import redis
 import ConfigParser
 
 config = ConfigParser.RawConfigParser()
+
 try:
     config.read('main.ini')
     REDIS_HOST = config.get('redis', 'host')
