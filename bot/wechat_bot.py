@@ -13,11 +13,12 @@ import re
 import xml.dom.minidom
 import urllib
 import sys
+import thread
 
 import qrcode
 
 from core import parse_command
-from tinker import logger
+from tools import create_logger
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -58,6 +59,7 @@ class WechatBot(object):
 
         self.base_request = None
 
+        self.sync_host = None
         self.sync_key = None
         self.sync_key_str = None
 
@@ -89,7 +91,7 @@ class WechatBot(object):
         resp = requests.post(UPLOAD_IMG, files=files)
         qr_code_url = json.loads(resp.content)['data']['url']
         hint = 'open this url to scan qrcode: {} '.format(qr_code_url)
-        logger.info(hint)
+        self.logger.info(hint)
         return qr_code_url
 
     def login(self):
@@ -197,7 +199,7 @@ class WechatBot(object):
                 if retcode == '0':
                     return True
             except Exception as e:
-                logger.error(e)
+                self.logger.error(e)
         raise
 
     def sync(self):
@@ -228,7 +230,7 @@ class WechatBot(object):
             try:
                 self.handle_msg(msg)
             except Exception as e:
-                logger.error(e)
+                self.logger.error(e)
             check_time = now() - check_time
             if check_time < 0.8:
                 time.sleep(0.8 - check_time)
@@ -282,8 +284,15 @@ class WechatBot(object):
                 return
         raise
 
+    @property
+    def logger(self):
+        """Create a logger for Bot
+        """
+        with thread.allocate_lock():
+            return create_logger(self.__class__.__name__)
 
-    def run(self):
+    @staticmethod
+    def run():
         bot.get_uuid()
         bot.get_qr_code()
         bot.login()
