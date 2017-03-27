@@ -13,8 +13,6 @@ class Routing():
 
     def register(self, routing_key):
         def func_wrapper(func):
-            if routing_key in RESERVED_COMMAND_LIST:
-                raise TinkerUserExceptioin(TinkerErrorCode.RESERVED_COMMAND)
             self.func_map[routing_key] = func
             return func
         return func_wrapper

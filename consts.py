@@ -6,4 +6,4 @@ e-mail: chuanwusun at gmail.com
 """
 ALL_KEYWORDS = 'WX_BOT_KEYWORDS'
 
-RESERVED_COMMAND_LIST = ['ping', 'help']
+RESERVED_COMMAND_LIST = ['help', ]

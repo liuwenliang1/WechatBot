@@ -11,11 +11,9 @@ from exc import TinkerUserExceptioin, TinkerErrorCode
 
 r = Routing()
 
-
 @r.register('ping')
 def ping():
     return 'pong'
-
 
 @r.register('set')
 def bot_set(command_string):

@@ -11,15 +11,5 @@ from exc import TinkerUserExceptioin
 def test_ping_case():
     assert r.call_method('ping') == 'pong'
 
-
-def test_set_get_case():
-    assert r.call_method('set', 'author a dev') == 'got it'
-
-    try:
-        r.call_method('set', 'author') == TinkerUserExceptioin
-    except TinkerUserExceptioin:
-        pass
-
-
 if __name__ == '__main__':
     pass
