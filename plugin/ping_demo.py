@@ -10,3 +10,4 @@ from tinker import r
 @r.register('ping')
 def ping():
     return 'pong'
+
