@@ -60,6 +60,8 @@ class WechatBot(object):
         self.sync_key = None
         self.sync_key_str = None
 
+        self.previous_msg = ''
+
     def get_uuid(self):
         params = {
             'appid': 'wx782c26e4c19acffb',

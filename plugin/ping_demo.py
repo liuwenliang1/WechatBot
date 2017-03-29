@@ -8,3 +8,4 @@ def ping():
         all commands should start with !
     """
     return 'pong'
+
