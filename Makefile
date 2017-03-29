@@ -5,6 +5,7 @@ help:
 		@echo '   make test             run test cases          '
 		@echo '   make clean            clean                   '
 		@echo '   make mybot            start bot               '
+		@echo '   make docs             update docs             '
 
 install:
 	pip install -r requirements.txt
@@ -18,3 +19,9 @@ clean:
 
 mybot:
 	python -m bot.wechat_bot
+
+docs:
+	cd docs; make html
+	open docs/_build/html/index.html
+
+.PHONY: docs
