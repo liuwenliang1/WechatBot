@@ -5,7 +5,7 @@ created: 2017-03-03 13:59
 e-mail: chuanwusun at gmail.com
 """
 from tinker import r
-from plugin import *
+from plugin import * # noqa
 
 
 def parse_command(text):
