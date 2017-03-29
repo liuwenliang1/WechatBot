@@ -4,15 +4,18 @@ author: chuanwu.sun
 created: 2017-02-15 14:15
 e-mail: chuanwusun at gmail.com
 """
-from consts import RESERVED_COMMAND_LIST
-from exc import TinkerUserExceptioin, TinkerErrorCode
+from exc import TinkerSystemException, TinkerErrorCode
 
-class Routing():
+
+class Routing(object):
+
     def __init__(self):
         self.func_map = {}
 
     def register(self, routing_key):
         def func_wrapper(func):
+            if routing_key in self.func_map:
+                raise TinkerSystemException(TinkerErrorCode)
             self.func_map[routing_key] = func
             return func
         return func_wrapper

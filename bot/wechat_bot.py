@@ -19,6 +19,7 @@ import qrcode
 
 from core import parse_command
 from tools import create_logger
+from exc import TinkerServerException, TinkerErrorCode
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -79,7 +80,7 @@ class WechatBot(object):
             code = pm.group(1)
             self.uuid = pm.group(2)
             return code == '200'
-        raise
+        raise TinkerServerException(TinkerErrorCode.GET_UUID_ERROR)
 
     def get_qr_code(self):
         string = 'https://login.weixin.qq.com/l/' + self.uuid
@@ -133,8 +134,8 @@ class WechatBot(object):
                 self.uin = node.childNodes[0].data
             elif node.nodeName == 'pass_ticket':
                 self.pass_ticket = node.childNodes[0].data
-        self.deviceid = 'e' + repr(random.random())[2:17]
         if all([self.skey, self.sid, self.uin, self.pass_ticket]):
+            self.logger.info('bot is running...')
             return True
         raise
 
@@ -170,7 +171,7 @@ class WechatBot(object):
             'skey': self.skey,
             'sid': self.sid,
             'uin': self.uin,
-            'deviceid': self.deviceid,
+            'deviceid': self.device_id,
             'synckey': self.sync_key_str,
             '_': now()
         }
@@ -225,7 +226,7 @@ class WechatBot(object):
 
         while True:
             check_time = now()
-            [retcode, selector] = self.sync_check()
+            self.sync_check()
             msg = self.sync()
             try:
                 self.handle_msg(msg)
@@ -265,6 +266,7 @@ class WechatBot(object):
         msg_id = str(now() * 1000) + str(random.random())[:5].replace('.', '')
         reply['Msg'].update({'LocalId': msg_id, 'ClientMsgId': msg_id})
         data = json.dumps(reply, ensure_ascii=False).encode('utf-8')
+        # i haven't figured out, but you have to do this...
         # i assume, the host option is used to route. So, you have to remove host before post request
         headers = {
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
@@ -275,14 +277,13 @@ class WechatBot(object):
             'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36',
         }
         for i in range(5):
-            #  i haven't figured out, but you have to do this...
             try:
                 r = self.session.post(url, data=data, headers=headers)
             except (requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
                 pass
             if r.status_code == 200:
                 return
-        raise
+        raise TinkerServerException(TinkerErrorCode.SEND_MSG_ERROR)
 
     @property
     def logger(self):
