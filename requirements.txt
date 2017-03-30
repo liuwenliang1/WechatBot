@@ -10,3 +10,4 @@ qrcode==5.3
 redis==2.10.5
 pytest==3.0.7
 enum34==1.1.6
+python-crontab==2.1.1
