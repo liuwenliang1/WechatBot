@@ -49,7 +49,7 @@
 ![演示](https://ooo.0o0.ooo/2017/03/30/58dbea9f642d9.jpeg)
 
 
-### Plan
+### branches
 
 目前主要分为三个分支来开发。
 
