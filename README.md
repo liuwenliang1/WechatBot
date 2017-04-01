@@ -5,71 +5,68 @@
 
 ### Quick Start
 
-1. 安装依赖并运行测试脚本
+1. install dependency and run tests
 
    ```
    make test
    ```
 
-2. 启动bot
+2. start bot
 
    ```
    make mybot
    ```
-   扫描二维码之后，机器人就跑起来啦。这时，可以向机器人发送一个!ping的消息来看看服务是否正常。
+   Open url according to the hint and scan the qr code, Tinker starts running.
+   After that, you can send a `!ping` to bot, Tinker will reply pong as response.
 
    ![Wechat](https://ooo.0o0.ooo/2017/03/29/58db399dd2ca6.jpeg)
 
-3. 功能开发
+3. more functions..
 
- 将你所实现的程序放到plugin/目录下，并使用该装饰器即可。
+ Place your python files under plugin, and add the following decorator.
 
  ```
  @r.register('COMMAND_STRING')
  ```
 
- 具体细节请看`plugin/ping_demo.py`。
+ For more details, you may wanna read `plugin/ping_demo.py`。
  
 ### Plugin List
 
-1. 测试服务是否存活。
+1. Test if bot is alive.
 
-向机器人发送`!ping`的指令。
+Send `!ping`.
 
-2. 基本的get，set
+2. redis-like get，set
 
-> 此功能在demo分支中。
+> switch to demo branch and add your redis config in main.ini like example.main.ini
 
-![演示](https://ooo.0o0.ooo/2017/03/30/58dbea829889a.jpeg)
+![demo](https://ooo.0o0.ooo/2017/03/30/58dbea829889a.jpeg)
 
-3. 简单的任务管理
+3. todo list
 
-> 此功能在demo分支中。
+> switch to demo branch and add your redis config in main.ini like example.main.ini
 
-![演示](https://ooo.0o0.ooo/2017/03/30/58dbea9f642d9.jpeg)
+![demo](https://ooo.0o0.ooo/2017/03/30/58dbea9f642d9.jpeg)
 
 
 ### branches
 
-目前主要分为三个分支来开发。
-
  * master
- 
-最稳定分支，但只包含一个测试bot是否正常运行的功能。
- 
+
+ most stable branch. Strongly recommend to use this branch
+
  * develop
 
-开发分支，包含一些新增功能，但是不保证版本稳定。
+ just for developing
 
  * demo
- 
-这是`chuanwu`自行开发的一些实际使用的功能，plugin列表会维护在master分支下的README。
- 
+
+ some plugins developed by chuanwu
 
 ### Docs
 
 For more details, you may like [reading the docs](http://tinker.readthedocs.io/).
-
 
 
 In the end, thanks to [@elezhangwen](https://github.com/elezhangwen).
