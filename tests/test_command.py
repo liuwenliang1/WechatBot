@@ -4,7 +4,7 @@ author: chuanwu.sun
 created: 2017-03-10 19:41
 e-mail: chuanwusun at gmail.com
 """
-from core import r
+from tinker.core import r
 
 
 def test_ping_case():
