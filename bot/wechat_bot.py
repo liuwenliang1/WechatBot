@@ -1,34 +1,30 @@
 # -*- coding:utf-8 -*-
-"""
-author: chuanwu.sun
-created: 2017-03-14 13:42
-e-mail: chuanwusun at gmail.com
-"""
 import io
 import json
-import requests
 import random
-import time
 import re
-import xml.dom.minidom
-import urllib
 import sys
 import thread
+import time
+import urllib
+import xml.dom.minidom
 
 import qrcode
+import requests
 
-from core import parse_command
-from tools import create_logger
-from exc import TinkerServerException, TinkerErrorCode
+from tinker.core import parse_command
+from tinker.exc import TinkerServerException, TinkerErrorCode
+from tools.tools import create_logger
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
-now = lambda : int(time.time())
+now = lambda: int(time.time())
 
 
 WECHAT_LOGIN_URL = 'https://login.weixin.qq.com/jslogin'
 WECHAT_QR_CODE_STRING = 'https://login.weixin.qq.com/l/{}'
+LOGIN_TEMPLATE = 'https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?tip=%s&uuid=%s&_=%s'
 UPLOAD_IMG = 'https://sm.ms/api/upload'
 
 headers = {
@@ -98,7 +94,6 @@ class WechatBot(object):
     def login(self):
 
         redirect_url = None
-        LOGIN_TEMPLATE = 'https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?tip=%s&uuid=%s&_=%s'
         tip = 1
 
         while not redirect_url:

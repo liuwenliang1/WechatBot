@@ -1,9 +1,4 @@
 # -*- coding:utf-8 -*-
-"""
-author: chuanwu.sun
-created: 2017-03-03 13:59
-e-mail: chuanwusun at gmail.com
-"""
 from tinker import r
 from plugin import * # noqa
 

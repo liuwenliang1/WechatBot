@@ -1,7 +1,7 @@
 # Tinker
 ![tinker](https://travis-ci.org/chuanwu/Tinker.svg?branch=master)
 
-*Tinker* is a wechat bot built for geeeeeeeeks. 
+*Tinker* is a wechat bot built for chatops.
 
 ### Quick Start
 
@@ -65,18 +65,6 @@
  
 这是`chuanwu`自行开发的一些实际使用的功能，plugin列表会维护在master分支下的README。
  
-
-### Feature
-
-- [x] 群消息回复
-- [x] 联系人消息回复
-- [x] 增加一个todo list的plugin
-
-### ToDo
-
-- [ ] 命令支持正则匹配
-- [ ] cron消息提醒
-- [ ] @某人或者全部
 
 ### Docs
 

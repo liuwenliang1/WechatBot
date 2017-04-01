@@ -1,9 +1,4 @@
 # -*- coding:utf-8 -*-
-"""
-author: chuanwu.sun
-created: 2017-03-16 13:34
-e-mail: chuanwusun at gmail.com
-"""
 from enum import Enum
 
 

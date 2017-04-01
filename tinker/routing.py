@@ -1,10 +1,5 @@
 # -*- coding:utf-8 -*-
-"""
-author: chuanwu.sun
-created: 2017-02-15 14:15
-e-mail: chuanwusun at gmail.com
-"""
-from exc import TinkerSystemException, TinkerErrorCode
+from tinker.exc import TinkerSystemException, TinkerErrorCode
 
 
 class Routing(object):
