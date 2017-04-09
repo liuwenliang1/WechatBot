@@ -1,68 +1,50 @@
-# Tinker
-![tinker](https://travis-ci.org/chuanwu/Tinker.svg?branch=master)
+# WechatBot
+[![Build Status](https://travis-ci.org/chuanwu/WechatBot.svg?branch=master)](https://travis-ci.org/chuanwu/WechatBot)
+[![codecov](https://codecov.io/gh/chuanwu/WechatBot/branch/master/graph/badge.svg)](https://codecov.io/gh/chuanwu/WechatBot)
 
-*Tinker* is a wechat bot built for chatops.
+
+*WechatBot* is a wechat bot built for geeks.
 
 ### Quick Start
 
-1. install dependency and run tests
+1. 安装依赖并执行测试脚本
 
    ```
    make test
    ```
-
 2. start bot
 
    ```
    make mybot
    ```
-   Open url according to the hint and scan the qr code, Tinker starts running.
-   After that, you can send a `!ping` to bot, Tinker will reply pong as response.
 
-   ![Wechat](https://ooo.0o0.ooo/2017/03/29/58db399dd2ca6.jpeg)
+   扫描二维码之后，机器人就跑起来啦。
+   这时，可以向机器人发送一个!ping的消息来看看服务是否正常。
 
-3. more functions..
+   ![Ping](https://ooo.0o0.ooo/2017/03/29/58db399dd2ca6.jpeg)
 
- Place your python files under plugin, and add the following decorator.
+3. 功能开发
 
- ```
- @r.register('COMMAND_STRING')
- ```
+将你所实现的程序放到plugin/目录下，并使用该装饰器即可。
 
- For more details, you may wanna read `plugin/ping_demo.py`。
- 
-### Plugin List
+```
+@r.register('COMMAND_STRING')
+```
 
-1. Test if bot is alive.
+具体细节请看`plugin/ping_demo.py`。
 
-Send `!ping`.
+## 规划
 
-2. redis-like get，set
+接下来会把Bot做成一个更加基础的服务，只对外暴露两个模块:
 
-> switch to demo branch and add your redis config in main.ini like example.main.ini
+1. 在接受指令之后发送定制消息
 
-![demo](https://ooo.0o0.ooo/2017/03/30/58dbea829889a.jpeg)
+   后续会增加session的概念，可能会支持AI，并通过向机器人发送消息来开关AI。
 
-3. todo list
+   来自用户的每一条消息都是作为一个命令。
 
-> switch to demo branch and add your redis config in main.ini like example.main.ini
+2. 主动向某个用户发送消息
 
-![demo](https://ooo.0o0.ooo/2017/03/30/58dbea9f642d9.jpeg)
-
-
-### branches
-
- * master
-
- most stable branch. Strongly recommend to use this branch
-
- * develop
-
- just for developing
-
- * demo
-
- some plugins developed by chuanwu
 
 ### Docs
 
