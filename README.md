@@ -1,13 +1,13 @@
-# Tinker
-![tinker](https://travis-ci.org/chuanwu/Tinker.svg?branch=master)
+# WechatBot
+[![Build Status](https://travis-ci.org/chuanwu/WechatBot.svg?branch=master)](https://travis-ci.org/chuanwu/WechatBot)
 
-*Tinker* is a wechat bot built for geeeeeeeeks. 
+*WechatBot* is a wechat bot built for geeks.
 
 ### Quick Start
 
 1. 安装依赖并运行测试脚本
 
-   ```
+[![Build Status](https://travis-ci.org/chuanwu/WechatBot.svg?branch=master)](https://travis-ci.org/chuanwu/WechatBot)
    make test
    ```
 
@@ -16,9 +16,10 @@
    ```
    make mybot
    ```
-   扫描二维码之后，机器人就跑起来啦。这时，可以向机器人发送一个!ping的消息来看看服务是否正常。
+   扫描二维码之后，机器人就跑起来啦。
+   这时，可以向机器人发送一个!ping的消息来看看服务是否正常。
 
-   ![Wechat](https://ooo.0o0.ooo/2017/03/29/58db399dd2ca6.jpeg)
+   ![Ping](https://ooo.0o0.ooo/2017/03/29/58db399dd2ca6.jpeg)
 
 3. 功能开发
 
@@ -30,22 +31,21 @@
 
  具体细节请看`plugin/ping_demo.py`。
 
-### Feature
+### 规划
 
-- [ ] 群消息回复
-- [ ] 联系人消息回复
+接下来会把Bot做成一个更加基础的服务，只对外暴露三个模块，
 
-### TODO
+1. 在接受指令之后发送定制消息
 
-- [ ] 命令支持正则匹配
-- [ ] cron消息提醒
-- [ ] @某人或者全部
-- [ ] 增加一个todo list的plugin
+后续会增加session的概念，可能会支持AI，并通过向机器人发送消息来开关AI。
+来自用户的每一条消息都是作为一个命令。
+
+2. 主动向某个用户发送消息
+
 
 ### Docs
 
 For more details, you may like [reading the docs](http://tinker.readthedocs.io/).
-
 
 
 In the end, thanks to [@elezhangwen](https://github.com/elezhangwen).
