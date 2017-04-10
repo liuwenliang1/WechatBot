@@ -1,6 +1,7 @@
 # WechatBot
 [![Build Status](https://travis-ci.org/chuanwu/WechatBot.svg?branch=master)](https://travis-ci.org/chuanwu/WechatBot)
 [![codecov](https://codecov.io/gh/chuanwu/WechatBot/branch/master/graph/badge.svg)](https://codecov.io/gh/chuanwu/WechatBot)
+[![PyPI version](https://badge.fury.io/py/wechatbot.svg)](https://badge.fury.io/py/wechatbot)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
@@ -38,10 +39,10 @@
 
 将你所实现的程序放到plugin/目录下，并使用该装饰器即可。
 
-    ```
-    from wechatbot import r
-    @r.register('COMMAND_STRING')
-    ```
+   ```
+   from wechatbot import r
+   @r.register('COMMAND_STRING')
+   ```
 
 具体细节请看`plugin/ping_demo.py`。
 
