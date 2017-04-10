@@ -65,4 +65,4 @@ temp/
 
 main.ini
 
-docs/_build/*
+wechatbot/docs/_build/*

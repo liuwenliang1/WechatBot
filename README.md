@@ -8,17 +8,28 @@
 
 ### Quick Start
 
+0. 支持pip安装
+
+```
+    pip install wechatbot
+```
+
+该功能尚在开发，还不成熟。请看1。
+ 
+
 1. 安装依赖并执行测试脚本
 
-   ```
+[![Build Status](https://travis-ci.org/chuanwu/WechatBot.svg?branch=master)](https://travis-ci.org/chuanwu/WechatBot)
+
+   ````
    make test
    ```
-2. start bot
+
+2. 启动WechatBot
 
    ```
    make mybot
    ```
-
    扫描二维码之后，机器人就跑起来啦。
    这时，可以向机器人发送一个!ping的消息来看看服务是否正常。
 
@@ -43,6 +54,8 @@
    后续会增加session的概念，可能会支持AI，并通过向机器人发送消息来开关AI。
 
    来自用户的每一条消息都是作为一个命令。
+
+
 
 2. 主动向某个用户发送消息
 
