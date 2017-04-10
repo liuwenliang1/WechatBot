@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from tinker.core import r
+from wechatbot import r
 
 
 def test_ping_case():

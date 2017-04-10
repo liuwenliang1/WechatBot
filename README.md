@@ -41,6 +41,7 @@
 将你所实现的程序放到plugin/目录下，并使用该装饰器即可。
 
     ```
+    from wechatbot import r
     @r.register('COMMAND_STRING')
     ```
 

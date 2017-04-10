@@ -1,5 +1,8 @@
 # -*- coding:utf-8 -*-
-from tinker.exc import TinkerSystemException, TinkerErrorCode
+from wechatbot.tinker.exc import (
+    TinkerSystemException,
+    TinkerErrorCode
+)
 
 
 class Routing(object):

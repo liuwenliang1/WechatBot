@@ -1,4 +1,4 @@
 # -*- coding:utf-8 -*-
-from tinker.routing import Routing
+from wechatbot.tinker.routing import Routing
 
 r = Routing()

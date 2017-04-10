@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
-from tinker import r
-from plugin import * # noqa
+from wechatbot import r
 
 
 def parse_command(text):

@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from tinker import r
+from wechatbot import r
 
 
 @r.register('ping')
@@ -8,4 +8,3 @@ def ping():
         all commands should start with !
     """
     return 'pong'
-
