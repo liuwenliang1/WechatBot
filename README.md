@@ -25,7 +25,7 @@
    make test
    ```
 
-2. 启动bot
+2. 启动WechatBot
 
    ```
    make mybot
