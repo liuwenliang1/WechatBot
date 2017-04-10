@@ -10,9 +10,8 @@
 
 #### 0. 支持pip安装
 
-    ```
+
     pip install wechatbot
-    ```
 
 已支持pip安装，但是文档还没有更新，请等待更新。
 
