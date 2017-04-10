@@ -9,7 +9,3 @@ def parse_command(text):
             return r.call_method(command, command_string)
         else:
             return r.call_method(text[1:])
-
-
-if __name__ == '__main__':
-    pass

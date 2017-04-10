@@ -12,9 +12,9 @@ import xml.dom.minidom
 import qrcode
 import requests
 
-from tinker.core import parse_command
-from tinker.exc import TinkerServerException, TinkerErrorCode
-from tools.tools import create_logger
+from wechatbot.core import parse_command
+from wechatbot.exc import BotServerException, BotErrorCode
+from wechatbot.tools import create_logger
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -78,7 +78,7 @@ class WechatBot(object):
             code = pm.group(1)
             self.uuid = pm.group(2)
             return code == '200'
-        raise TinkerServerException(TinkerErrorCode.GET_UUID_ERROR)
+        raise BotServerException(BotErrorCode.GET_UUID_ERROR)
 
     def get_qr_code(self):
         string = 'https://login.weixin.qq.com/l/' + self.uuid
@@ -280,7 +280,7 @@ class WechatBot(object):
                 pass
             if r.status_code == 200:
                 return
-        raise TinkerServerException(TinkerErrorCode.SEND_MSG_ERROR)
+        raise BotServerException(BotErrorCode.SEND_MSG_ERROR)
 
     @property
     def logger(self):

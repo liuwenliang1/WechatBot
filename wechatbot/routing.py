@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
-from wechatbot.tinker.exc import (
-    TinkerSystemException,
-    TinkerErrorCode
+from wechatbot.exc import (
+    BotSystemException,
+    BotErrorCode
 )
 
 
@@ -13,7 +13,7 @@ class Routing(object):
     def register(self, routing_key):
         def func_wrapper(func):
             if routing_key in self.func_map:
-                raise TinkerSystemException(TinkerErrorCode)
+                raise BotSystemException(BotErrorCode)
             self.func_map[routing_key] = func
             return func
         return func_wrapper
@@ -27,3 +27,6 @@ class Routing(object):
         :return:
         """
         return self.func_map[command](*args, **kwargs)
+
+
+r = Routing()
