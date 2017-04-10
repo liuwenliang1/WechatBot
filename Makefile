@@ -19,7 +19,7 @@ clean:
 	find . \( -name "*.pyc" -o -name "*.log" -o -name "*.swp" -o -name "*.swo" \) -delete
 
 mybot:
-	cd wechatbot; python -m bot.wechat_bot
+	python -m wechatbot.bot
 
 docs:
 	cd wechatbot
