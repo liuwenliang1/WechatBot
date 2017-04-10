@@ -8,8 +8,7 @@
 
 ### Quick Start
 
-
-0. 支持pip安装
+#### 0. 支持pip安装
 
 ```
     pip install wechatbot
@@ -17,18 +16,14 @@
 
 该功能尚在开发，还不成熟。请看1。
 
+#### 1. 安装依赖并执行测试脚本
 
 
-1. 安装依赖并执行测试脚本
-
-
-
-   ````
+   ```
    make test
    ```
 
-
-2. 启动WechatBot
+#### 2. 启动WechatBot
 
 
    ```
@@ -40,9 +35,10 @@
 
    ![Ping](https://ooo.0o0.ooo/2017/03/29/58db399dd2ca6.jpeg)
 
-3. 功能开发
+#### 3. 功能开发
 
 将你所实现的程序放到plugin/目录下，并使用该装饰器即可。
+
 
     ```
     @r.register('COMMAND_STRING')
