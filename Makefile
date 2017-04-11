@@ -27,6 +27,7 @@ docs:
 	open docs/_build/html/index.html
 
 upload:
+	rm -rf dist/*
 	python setup.py sdist bdist_wheel
 	twine upload dist/*
 
