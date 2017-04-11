@@ -14,7 +14,7 @@
 
     pip install wechatbot
 
-已支持pip安装，但是文档还没有更新，请等待更新。
+已支持pip安装，但是文档还没有更新，请fork后等待更新。如果你对这个项目有兴趣，啊哈，请通过`chuanwusun@gmail.com`联系我，独力难支，I NEED YOUR HELP.
 
 #### 1. 安装依赖并执行测试脚本
 

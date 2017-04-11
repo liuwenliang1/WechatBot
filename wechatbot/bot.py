@@ -289,14 +289,6 @@ class WechatBot(object):
         with thread.allocate_lock():
             return create_logger(self.__class__.__name__)
 
-    @staticmethod
-    def run():
-        bot.get_uuid()
-        bot.get_qr_code()
-        bot.login()
-        bot.init()
-        bot.proc_msg()
 
-if __name__ == "__main__":
-    bot = WechatBot()
-    bot.run()
+def init():
+    return WechatBot()
