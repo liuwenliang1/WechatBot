@@ -15,7 +15,7 @@ with open(path.join(here, 'README.md')) as f:
 
 setup(
     name="wechatbot",
-    version='2.0.2',
+    version='1.0.4',
     description="a wechat bot developed for geeks",
     long_description=long_description,
     author="chuanwu",
