@@ -26,7 +26,7 @@ requires = [
 
 setup(
     name="wechatbot",
-    version='1.0.4',
+    version='1.0.5',
     description="a wechat bot developed for geeks",
     long_description=long_description,
     author="chuanwu",
