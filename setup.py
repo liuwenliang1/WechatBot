@@ -24,6 +24,8 @@ requires = [
     "qrcode==5.3",
     "pytest==3.0.7",
     "enum34==1.1.6"
+    "enum34==1.1.6",
+    "requests==2.7.0"
 ]
 
 setup(

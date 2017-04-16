@@ -26,14 +26,13 @@
    make install
    ````
 
-#### 1. 执行测试脚本
-
+#### 2. 执行测试脚本
 
    ```
    make test
    ```
 
-#### 2. 启动WechatBot
+#### 3. 启动WechatBot
 
 
    ```
