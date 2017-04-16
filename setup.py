@@ -8,7 +8,7 @@ here = path.abspath(path.dirname(__file__))
 
 entry_points = []
 
-with open(path.join(here, 'README.md')) as f:
+with open(path.join(here, 'README.rst')) as f:
     long_description = f.read()
 
 requires = [
