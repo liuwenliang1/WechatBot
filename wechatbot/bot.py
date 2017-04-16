@@ -13,7 +13,6 @@ import xml.dom.minidom
 import qrcode
 import requests
 
-from wechatbot.core import parse_command
 from wechatbot.exc import BotServerException, BotErrorCode
 from wechatbot.tools import create_logger
 
@@ -34,11 +33,6 @@ WECHAT_INIT_URL = '{base_uri}/webwxinit?r={r}i&lang=en_US&pass_ticket={pass_tick
 UPLOAD_IMG_URL = 'https://sm.ms/api/upload'
 
 MSG = '{color}{content}{nc}'
-
-RED = '\033[0;31m'
-GREEN = ''
-NC = '\033[0m' # No Color
-
 
 RED = '\033[0;31m'
 GREEN = '\033[0;32m'
@@ -67,6 +61,7 @@ WECHAT_SEND_MSG_HEADER = {
     'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36',
 }
 
+
 class WechatBot(object):
 
     def __init__(self):
@@ -89,6 +84,8 @@ class WechatBot(object):
         self.params['sync_host'] = None
         self.params['sync_key'] = None
         self.params['sync_key_str'] = None
+
+        self.func = None
 
     def read_snapshot(self):
         with open(PKL_FILE, 'r') as fp:
@@ -247,8 +244,7 @@ class WechatBot(object):
                 if code == '0':
                     return True
             except Exception as e:
-                self.logger.error(e)
-                raise
+                self.logger.info(e)
         raise BotServerException(BotErrorCode.SYNC_HOST_CHECK_ERROR)
 
     def sync(self):
@@ -285,7 +281,7 @@ class WechatBot(object):
             try:
                 self.handle_msg(msg)
             except Exception as e:
-                raise e
+                self.logger.info(e)
             check_time = now() - check_time
             if check_time < 1:
                 time.sleep(1 - check_time)
@@ -296,13 +292,14 @@ class WechatBot(object):
             if ':<br/>!' in msg['Content']:
                 _, msg['Content'] = msg['Content'].split('<br/>', 1)
             self.logger.info(green_alert(msg['Content']))
-            if not msg['Content'] or not msg['Content'].startswith('!'):
+            response = self.call(msg['Content'])
+            if not msg['Content'] or not response:
                 continue
             reply = {
                 'BaseRequest': self.params['base_request'],
                 'Msg': {
                     'Type': 1,
-                    'Content': parse_command(msg['Content']),
+                    'Content': response,
                     'FromUserName': msg['ToUserName'],
                     'ToUserName': msg['FromUserName']
                 },
@@ -313,6 +310,22 @@ class WechatBot(object):
             except Exception as e:
                 reply['Msg']['Content'] = 'error occurs: {}'.format(e)
                 self.send_msg(reply)
+
+    def text_reply(self, _func):
+        """
+        后续应该把发送消息的用户信息也附上，以及群组
+        继承类应该重新这个方法
+        :return:
+        """
+        self.func = _func
+
+        def func_wrapper(_func):
+            self.logger.info('loading func:{}'.format(_func.__name__))
+            return _func
+        return func_wrapper
+
+    def call(self, msg):
+        return self.func(msg)
 
     def send_msg(self, reply):
         url = self.params['base_uri'] + '/webwxsendmsg'
@@ -340,16 +353,7 @@ class WechatBot(object):
     def run(self):
         try:
             self.login(using_snap_shot=True)
-        except Exception as e:
+        except:
             self.login(using_snap_shot=False)
         self.logger.info(green_alert(WECHAT_BOT_RUNNING))
         self.proc_msg()
-
-
-def init():
-    return WechatBot()
-
-
-if __name__ == '__main__':
-    wechat_bot = init()
-    wechat_bot.run()
