@@ -15,9 +15,18 @@
 
     pip install wechatbot
 
-已支持pip安装，但是文档还没有更新，请fork后等待更新。如果你对这个项目有兴趣，啊哈，请通过`chuanwusun@gmail.com`联系我，独力难支，I NEED YOUR HELP.
+已支持pip安装，但是文档还没有更新，请fork后等待更新。如果你对这个项目有兴趣，啊哈，请通过`chuanwusun@gmail.com`或者扫描下方微信二维码联系我，独力难支，I NEED YOUR HELP.
 
-#### 1. 安装依赖并执行测试脚本
+![my_wechat.png](https://ooo.0o0.ooo/2017/04/16/58f30ae346d96.png)
+
+
+#### 1. 安装依赖
+
+   ````
+   make install
+   ````
+
+#### 1. 执行测试脚本
 
 
    ```
@@ -47,11 +56,6 @@
 
 具体细节请看`plugin/ping_demo.py`。
 
-## 联系我
-
-如果你再使用过程中，遇到任何问题，请联系我：
-
-![my_wechat.png](https://ooo.0o0.ooo/2017/04/16/58f30ae346d96.png)
 
 ## 规划
 

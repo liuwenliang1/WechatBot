@@ -13,6 +13,19 @@ entry_points = [
 with open(path.join(here, 'README.md')) as f:
     long_description = f.read()
 
+requires = [
+    "beautifulsoup4==4.5.1",
+    "anyjson==0.3.3",
+    "simplejson==3.7.3",
+    "ujson==1.34",
+    "pypng==0.0.18",
+    "editdistance==0.3",
+    "Pillow==4.0.0",
+    "qrcode==5.3",
+    "pytest==3.0.7",
+    "enum34==1.1.6"
+]
+
 setup(
     name="wechatbot",
     version='1.0.4',
@@ -25,6 +38,5 @@ setup(
     license='MIT',
     url="https://github.com/chuanwu/WechatBot.py",
     entry_points={"console_scripts": entry_points},
-    install_requires=[],
-
+    install_requires=requires
 )
