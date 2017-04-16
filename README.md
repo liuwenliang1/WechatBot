@@ -10,15 +10,6 @@
 
 ### Quick Start
 
-#### 0. 支持pip安装
-
-
-    pip install wechatbot
-
-已支持pip安装，但是文档还没有更新，请fork后等待更新。如果你对这个项目有兴趣，啊哈，请通过`chuanwusun@gmail.com`或者扫描下方微信二维码联系我，独力难支，I NEED YOUR HELP.
-
-![my_wechat.png](https://ooo.0o0.ooo/2017/04/16/58f30ae346d96.png)
-
 
 #### 1. 安装依赖
 
@@ -69,6 +60,17 @@
 
 2. 主动向某个用户发送消息
 
+
+## pypi
+
+
+    ```
+    pip install wechatbot
+    ```
+
+已支持pip安装，但是文档还没有更新，请fork后等待更新。如果你对这个项目有兴趣，啊哈，请通过`chuanwusun@gmail.com`或者扫描下方微信二维码联系我，独力难支，I NEED YOUR HELP.
+
+![my_wechat.png](https://ooo.0o0.ooo/2017/04/16/58f30ae346d96.png)
 
 ### Docs
 
