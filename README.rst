@@ -3,11 +3,6 @@ WechatBot
 =========================
 
 .. image:: https://travis-ci.org/chuanwu/WechatBot.svg?branch=master
-.. image:: https://badge.fury.io/py/wechatbot.svg
-.. image:: https://codecov.io/gh/chuanwu/WechatBot/branch/master/graph/badge.svg
-.. image:: https://img.shields.io/pypi/pyversions/logwrap.svg
-.. image:: https://img.shields.io/badge/License-MIT-yellow.svg
-
 
 *WechatBot* is a wechat bot built for geeks.
 
@@ -28,23 +23,23 @@ WechatBot
 1.2 用法
 ---------------------
 
-   贴上示例代码， wechatbot/ping.py。
+贴上示例代码， wechatbot/ping.py。
 
-   .. code-block:: python
+.. code-block:: python
 
-       from wechatbot import WechatBot
+    from wechatbot import WechatBot
 
-       bot = WechatBot()
+    bot = WechatBot()
 
 
-       @bot.text_reply
-       def ping(msg):
-           print msg
-           if msg == 'ping':
-               return 'pong'
+    @bot.text_reply
+    def ping(msg):
+        print msg
+        if msg == 'ping':
+            return 'pong'
 
-       if __name__ == '__main__':
-           bot.run()
+    if __name__ == '__main__':
+        bot.run()
 
 
 扫描二维码之后，机器人就跑起来啦。
