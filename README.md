@@ -10,41 +10,36 @@
 
 ### Quick Start
 
-
-#### 1. 安装依赖
+1. 安装
 
    ````
-   make install
-   ````
-
-#### 2. 执行测试脚本
+   pip install wechatbot
 
    ```
-   make test
+
+2. 用法
+
+   贴上示例代码， `wechatbot/ping.py`。
+
    ```
+   from wechatbot import WechatBot
 
-#### 3. 启动WechatBot
+   bot = WechatBot()
 
 
-   ```
-   make mybot
+   @bot.text_reply
+   def ping(msg):
+       print msg
+       if msg == 'ping':
+           return 'pong'
+
+   if __name__ == '__main__':
+       bot.run()
    ```
 
    扫描二维码之后，机器人就跑起来啦。
-   这时，可以向机器人发送一个!ping的消息来看看服务是否正常。
-
-![demo.png](https://ooo.0o0.ooo/2017/04/16/58f30bd7c2fc8.png)
-
-#### 3. 功能开发
-
-将你所实现的程序放到plugin/目录下，并使用该装饰器即可。
-
-   ```
-   from wechatbot import r
-   @r.register('COMMAND_STRING')
-   ```
-
-具体细节请看`plugin/ping_demo.py`。
+   这时，可以向机器人发送一个ping的消息来看看服务是否正常。
+   对了，短暂退出不需要重新扫描二维码登录哦～
 
 
 ## 规划
