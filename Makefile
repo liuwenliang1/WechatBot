@@ -23,7 +23,7 @@ mybot:
 	python -m wechatbot.bot
 
 develop:
-	python -m wechatbot.bot
+	python -m wechatbot.ping
 
 docs:
 	cd wechatbot
