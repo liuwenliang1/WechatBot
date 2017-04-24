@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 import sys
 import logging
-import editdistance
 
 
 def create_logger(app_name):
