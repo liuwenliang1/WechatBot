@@ -6,9 +6,9 @@ WechatBot
 
 *WechatBot* is a wechat bot built for geeks.
 
-========================
+=====================
  1. 快速上手
-========================
+=====================
 
 
 ---------------------
@@ -27,18 +27,18 @@ WechatBot
 
 .. code-block:: python
 
+    # -*- coding:utf-8 -*-
     from wechatbot import WechatBot
 
-    bot = WechatBot()
 
+    class MyBot(WechatBot):
+        def text_reply(self, msg):
+            if msg == 'ping':
+                return 'pong'
 
-    @bot.text_reply
-    def ping(msg):
-        print msg
-        if msg == 'ping':
-            return 'pong'
 
     if __name__ == '__main__':
+        bot = MyBot()
         bot.run()
 
 
@@ -62,8 +62,5 @@ WechatBot
 - 主动向某个用户发送消息
 
 
-已支持pip安装，但是文档还没有更新，请fork后等待更新。如果你对这个项目有兴趣，啊哈，请通过chuanwusun@gmail.com或者扫描下方微信二维码联系我，独力难支，I NEED YOUR HELP.
-
-.. image:: https://ooo.0o0.ooo/2017/04/16/58f30ae346d96.png
-
 谢谢阅读！
+**Good luck, have fun!**

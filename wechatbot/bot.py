@@ -14,52 +14,31 @@ import qrcode
 import requests
 
 from wechatbot.exc import BotServerException, BotErrorCode
-from wechatbot.tools import create_logger
-
-now = lambda: int(time.time())
+from wechatbot.tools import create_logger, red_alert, green_alert, now
+from wechatbot.consts import (
+    WECHAT_APP_ID,
+    WECHAT_FIRST_LOGIN_URL,
+    WECHAT_QR_CODE_STRING,
+    WECHAT_SECONT_LOGIN_URL,
+    WECHAT_BOT_RUNNING,
+    WECHAT_BOT_SYNC_CHECK_URL,
+    WECHAT_BOT_SYNC_URL,
+    WECHAT_INIT_URL,
+    WECHAT_APP_ID,
+    WECHAT_FIRST_LOGIN_URL,
+    WECHAT_QR_CODE_STRING,
+    WECHAT_SECONT_LOGIN_URL,
+    WECHAT_BOT_RUNNING,
+    WECHAT_BOT_SYNC_CHECK_URL,
+    WECHAT_BOT_SYNC_URL,
+    WECHAT_INIT_URL,
+    UPLOAD_IMG_URL,
+    WECHAT_HEADERS,
+    WECHAT_SEND_MSG_HEADER
+)
 
 directory = os.path.dirname(os.path.abspath(__file__))
 PKL_FILE = '{directory}/wechat.pkl'.format(directory=directory)
-
-WECHAT_APP_ID = 'wx782c26e4c19acffb'
-WECHAT_FIRST_LOGIN_URL = 'https://login.weixin.qq.com/jslogin'
-WECHAT_QR_CODE_STRING = 'https://login.weixin.qq.com/l/{}'
-WECHAT_SECONT_LOGIN_URL = 'https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?tip={tip}&uuid={uuid}&_={now}'
-WECHAT_BOT_RUNNING = '机器人已经启动啦！你可以发送`ping`给机器人，机器人会回复哦。'
-WECHAT_BOT_SYNC_CHECK_URL = 'https://{sync_host}/cgi-bin/mmwebwx-bin/synccheck?{params}'
-WECHAT_BOT_SYNC_URL = '{base_uri}/webwxsync?sid={sid}&skey={skey}&lang=en_US&pass_ticket={pass_ticket}'
-WECHAT_INIT_URL = '{base_uri}/webwxinit?r={r}i&lang=en_US&pass_ticket={pass_ticket}'
-
-UPLOAD_IMG_URL = 'https://sm.ms/api/upload'
-
-MSG = '{color}{content}{nc}'
-
-RED = '\033[0;31m'
-GREEN = '\033[0;32m'
-NC = '\033[0m'  # No Color
-
-red_alert = lambda content: MSG.format(color=RED, content=content, nc=NC)
-green_alert = lambda content: MSG.format(color=GREEN, content=content, nc=NC)
-
-
-WECHAT_HEADERS = {
-    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-    'accept-encoding': 'gzip, deflate, br',
-    'accept-language': 'zh-CN,zh;q=0.8,en-US;q=0.6,en;q=0.4',
-    'cache-control': 'max-age=0',
-    'host': 'login.wx.qq.com',
-    'content-type': 'application/json; charset=UTF-8',
-    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36',
-}
-
-WECHAT_SEND_MSG_HEADER = {
-    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-    'accept-encoding': 'gzip, deflate, br',
-    'accept-language': 'zh-CN,zh;q=0.8,en-US;q=0.6,en;q=0.4',
-    'cache-control': 'max-age=0',
-    'content-type': 'application/json; charset=UTF-8',
-    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36',
-}
 
 
 class WechatBot(object):
@@ -281,6 +260,7 @@ class WechatBot(object):
             try:
                 self.handle_msg(msg)
             except Exception as e:
+                raise
                 self.logger.info(e)
             check_time = now() - check_time
             if check_time < 1:
@@ -292,7 +272,7 @@ class WechatBot(object):
             if ':<br/>!' in msg['Content']:
                 _, msg['Content'] = msg['Content'].split('<br/>', 1)
             self.logger.info(green_alert(msg['Content']))
-            response = self.call(msg['Content'])
+            response = self.text_reply(msg['Content'])
             if not msg['Content'] or not response:
                 continue
             reply = {
@@ -311,18 +291,12 @@ class WechatBot(object):
                 reply['Msg']['Content'] = 'error occurs: {}'.format(e)
                 self.send_msg(reply)
 
-    def text_reply(self, _func):
+    def text_reply(self, msg):
         """
-        后续应该把发送消息的用户信息也附上，以及群组
-        继承类应该重新这个方法
+        向特定的回应信息发送消息，请继承该方法，具体请看ping.py的实现
         :return:
         """
-        self.func = _func
-
-        def func_wrapper(_func):
-            self.logger.info('loading func:{}'.format(_func.__name__))
-            return _func
-        return func_wrapper
+        pass
 
     def call(self, msg):
         return self.func(msg)
@@ -332,8 +306,6 @@ class WechatBot(object):
         msg_id = str(now() * 1000) + str(random.random())[:5].replace('.', '')
         reply['Msg'].update({'LocalId': msg_id, 'ClientMsgId': msg_id})
         data = json.dumps(reply, ensure_ascii=False).encode('utf-8')
-        # i haven't figured out, but you have to do this...
-        # i assume, the host option is used to route. So, you have to remove host before post request
         for i in range(5):
             try:
                 r = self.session.post(url, data=data, headers=WECHAT_SEND_MSG_HEADER)

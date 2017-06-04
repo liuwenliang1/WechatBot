@@ -1,6 +1,19 @@
 # -*- coding:utf-8 -*-
+import time
 import sys
 import logging
+
+from wechatbot.consts import (
+    MSG,
+    RED,
+    GREEN,
+    NC
+)
+
+now = lambda : time.time()
+
+red_alert = lambda content: MSG.format(color=RED, content=content, nc=NC)
+green_alert = lambda content: MSG.format(color=GREEN, content=content, nc=NC)
 
 
 def create_logger(app_name):

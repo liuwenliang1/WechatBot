@@ -67,3 +67,4 @@ main.ini
 
 wechatbot/docs/_build/*
 wechatbot/wechat.pkl
+.idea/*
