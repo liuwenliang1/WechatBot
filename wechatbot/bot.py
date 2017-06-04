@@ -271,7 +271,6 @@ class WechatBot(object):
         for msg in msgs["AddMsgList"]:
             if ':<br/>!' in msg['Content']:
                 _, msg['Content'] = msg['Content'].split('<br/>', 1)
-            self.logger.info(green_alert(msg['Content']))
             response = self.text_reply(msg['Content'])
             if not msg['Content'] or not response:
                 continue
