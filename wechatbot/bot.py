@@ -1,4 +1,4 @@
-# -*- coding:utf-8 -*-
+# -*- coding: utf-8 -*-
 import os
 import io
 import json
@@ -257,11 +257,7 @@ class WechatBot(object):
             check_time = now()
             self.sync_check()
             msg = self.sync()
-            try:
-                self.handle_msg(msg)
-            except Exception as e:
-                raise
-                self.logger.info(e)
+            self.handle_msg(msg)
             check_time = now() - check_time
             if check_time < 1:
                 time.sleep(1 - check_time)
@@ -271,14 +267,17 @@ class WechatBot(object):
         for msg in msgs["AddMsgList"]:
             if ':<br/>!' in msg['Content']:
                 _, msg['Content'] = msg['Content'].split('<br/>', 1)
-            response = self.text_reply(msg['Content'])
+            try:
+                response = self.text_reply(msg['Content'])
+            except Exception as e:
+                response = e.message
             if not msg['Content'] or not response:
                 continue
             reply = {
                 'BaseRequest': self.params['base_request'],
                 'Msg': {
                     'Type': 1,
-                    'Content': response,
+                    'Content': response.decode('utf-8'),
                     'FromUserName': msg['ToUserName'],
                     'ToUserName': msg['FromUserName']
                 },
