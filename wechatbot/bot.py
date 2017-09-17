@@ -349,6 +349,7 @@ class WechatBot(object):
         except:
             self.login(using_snap_shot=False)
         self.logger.info(green_alert(WECHAT_BOT_RUNNING))
+        self.get_all_contacts()
 
     def run(self):
         self.proc_msg()

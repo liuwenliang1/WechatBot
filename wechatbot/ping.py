@@ -11,5 +11,4 @@ class MyBot(WechatBot):
 if __name__ == '__main__':
     bot = MyBot()
     bot.login_wechat()
-    bot.get_all_contacts()
     bot.run()

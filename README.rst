@@ -33,12 +33,12 @@ WechatBot
 
     class MyBot(WechatBot):
         def text_reply(self, msg):
-            if msg == 'ping':
+            if "ping" in msg:
                 return 'pong'
-
 
     if __name__ == '__main__':
         bot = MyBot()
+        bot.login_wechat()
         bot.run()
 
 
@@ -52,15 +52,12 @@ WechatBot
 
 接下来会把Bot做成一个更加基础的服务，只对外暴露两个模块:
 
-- 在接受指令之后发送定制消息
-
-后续会增加session的概念，可能会支持AI，并通过向机器人发送消息来开关AI。
-
-来自用户的每一条消息都是作为一个命令。
+- 在接受指令之后发送定制消息 [done]
 
 
-- 主动向某个用户发送消息
+- 主动向某个用户发送消息 [pending]
 
 
 谢谢阅读！
+
 **Good luck, have fun!**
