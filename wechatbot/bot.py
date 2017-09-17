@@ -14,7 +14,7 @@ import qrcode
 import requests
 
 from wechatbot.exc import BotServerException, BotErrorCode
-from wechatbot.tools import create_logger, red_alert, green_alert, now
+from wechatbot.tools import create_logger, red_alert, green_alert, now, get_username_by_name
 from wechatbot.consts import (
     WECHAT_APP_ID,
     WECHAT_FIRST_LOGIN_URL,
@@ -24,17 +24,11 @@ from wechatbot.consts import (
     WECHAT_BOT_SYNC_CHECK_URL,
     WECHAT_BOT_SYNC_URL,
     WECHAT_INIT_URL,
-    WECHAT_APP_ID,
-    WECHAT_FIRST_LOGIN_URL,
-    WECHAT_QR_CODE_STRING,
-    WECHAT_SECONT_LOGIN_URL,
-    WECHAT_BOT_RUNNING,
-    WECHAT_BOT_SYNC_CHECK_URL,
-    WECHAT_BOT_SYNC_URL,
-    WECHAT_INIT_URL,
     UPLOAD_IMG_URL,
+    WECHAT_MSG_URL,
     WECHAT_HEADERS,
-    WECHAT_SEND_MSG_HEADER
+    WECHAT_SEND_MSG_HEADER,
+    WECHAT_CONTACT_URL
 )
 
 directory = os.path.dirname(os.path.abspath(__file__))
@@ -42,7 +36,6 @@ PKL_FILE = '{directory}/wechat.pkl'.format(directory=directory)
 
 
 class WechatBot(object):
-
     def __init__(self):
 
         self.session = requests.Session()
@@ -63,6 +56,9 @@ class WechatBot(object):
         self.params['sync_host'] = None
         self.params['sync_key'] = None
         self.params['sync_key_str'] = None
+        self.params['contacts'] = None
+        self.params['reply'] = None
+        self.params['myself'] = None
 
         self.func = None
 
@@ -83,7 +79,7 @@ class WechatBot(object):
             'appid': WECHAT_APP_ID,
             'fun': 'new',
             'lang': 'zh_CN',
-            '_': int(time.time()) * 1000 + random.randint(1, 999),
+            '_': now() * 1000 + random.randint(1, 999),
         }
         r = self.session.get(WECHAT_FIRST_LOGIN_URL, params=params)
         r.encoding = 'utf-8'
@@ -104,7 +100,7 @@ class WechatBot(object):
         files = {'smfile': img_in_memory}
         resp = requests.post(UPLOAD_IMG_URL, files=files)
         qr_code_url = json.loads(resp.content)['data']['url']
-        self.logger.info(red_alert("请打开此网页并扫描二维码：{}".format(qr_code_url)))
+        self.logger.info(red_alert(u"请打开此网页并扫描二维码：{}".format(qr_code_url)))
         img_in_memory.truncate()
 
     def init(self):
@@ -113,7 +109,7 @@ class WechatBot(object):
         :return:
         """
         url = WECHAT_INIT_URL.format(base_uri=self.params['base_uri'],
-                                     r=int(time.time()),
+                                     r=now(),
                                      pass_ticket=self.params['pass_ticket'])
         params = {
             'BaseRequest': self.params['base_request']
@@ -124,6 +120,7 @@ class WechatBot(object):
         self.params['sync_key'] = dic['SyncKey']
         self.params['sync_key_str'] = '|'.join([str(keyVal['Key']) + '_' + str(keyVal['Val'])
                                                 for keyVal in self.params['sync_key']['List']])
+        self.params['myself'] = dic['User']['UserName']
         return dic['BaseResponse']['Ret'] == 0
 
     def login(self, using_snap_shot=True):
@@ -235,7 +232,7 @@ class WechatBot(object):
         params = {
             'BaseRequest': self.params['base_request'],
             'SyncKey': self.params['sync_key'],
-            'rr': ~int(time.time())
+            'rr': ~int(now())
         }
         try:
             r = self.session.post(url, data=json.dumps(params), timeout=60)
@@ -268,9 +265,10 @@ class WechatBot(object):
             if ':<br/>!' in msg['Content']:
                 _, msg['Content'] = msg['Content'].split('<br/>', 1)
             try:
-                response = self.text_reply(msg['Content'])
+                response = self.text_reply(msg['Content']) if self.text_reply(msg['Content']) else ''
             except Exception as e:
                 response = e.message
+            self.logger.info(green_alert(unicode(msg['Content'] + " replied: " + response)))
             if not msg['Content'] or not response:
                 continue
             reply = {
@@ -283,21 +281,37 @@ class WechatBot(object):
                 },
                 'Scene': msg['RecommendInfo']['Scene']
             }
+            self.params['reply'] = reply
             try:
                 self.send_msg(reply)
             except Exception as e:
                 reply['Msg']['Content'] = 'error occurs: {}'.format(e)
                 self.send_msg(reply)
+            # send msg to someone
+            # self.send_msg_to_friend("Hello", u"桃子")
 
-    def text_reply(self, msg):
-        """
-        向特定的回应信息发送消息，请继承该方法，具体请看ping.py的实现
-        :return:
-        """
-        pass
+    def send_msg_to_friend(self, content, user_name):
 
-    def call(self, msg):
-        return self.func(msg)
+        reply = self.params['reply']
+        if not reply:
+            return
+        reply['Msg']['FromUserName'] = self.params['myself']
+        reply['Msg']['ToUserName'] = get_username_by_name(self.params['contacts'], user_name)
+        reply['Msg']['Content'] = content
+        self.send_msg(reply)
+
+    def get_all_contacts(self):
+        data = {
+            'base_uri': self.params['base_uri'],
+            'pass_ticket': self.params['pass_ticket'],
+            'skey': self.params['skey'],
+            'now': now()
+        }
+        resp = self.session.post(
+            WECHAT_CONTACT_URL.format(base_uri=self.params['base_uri'], pass_ticket=self.params['pass_ticket'],
+                                      skey=self.params['skey'], now=int(now())), data={},
+            headers=WECHAT_SEND_MSG_HEADER)
+        self.params['contacts'] = resp.content
 
     def send_msg(self, reply):
         url = self.params['base_uri'] + '/webwxsendmsg'
@@ -313,17 +327,28 @@ class WechatBot(object):
                 return
         raise BotServerException(BotErrorCode.SEND_MSG_ERROR)
 
+    def text_reply(self, msg):
+        """
+        向特定的回应信息发送消息，请继承该方法，具体请看ping.py的实现
+        :return:
+        """
+        pass
+
+    def call(self, msg):
+        return self.func(msg)
+
     @property
     def logger(self):
         """Create a logger for Bot
         """
-        with thread.allocate_lock():
-            return create_logger(self.__class__.__name__)
+        return create_logger(self.__class__.__name__)
 
-    def run(self):
+    def login_wechat(self):
         try:
             self.login(using_snap_shot=True)
         except:
             self.login(using_snap_shot=False)
         self.logger.info(green_alert(WECHAT_BOT_RUNNING))
+
+    def run(self):
         self.proc_msg()

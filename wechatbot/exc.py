@@ -19,18 +19,18 @@ class BotErrorCode(Enum):
 
 
 TRANSLATIONS = {
-    BotErrorCode.MISSING_PARAMETER: '参数不全',
-    BotErrorCode.UNKNOWN_COMMAND: '对不起，您的命令不能识别。',
-    BotErrorCode.RESERVED_COMMAND: '对不起，这是一个保留关键字。',
-    BotErrorCode.DUPLICATED_COMMAND: '已经存在相同命令',
-    BotErrorCode.SEND_MSG_ERROR: '发送消息失败',
-    BotErrorCode.LOGIN_ERROR: '登录失败',
-    BotErrorCode.GET_UUID_ERROR: '获取uuid失败',
-    BotErrorCode.SYNC_CHECK_ERROR: '同步检查失败',
-    BotErrorCode.SYNC_HOST_CHECK_ERROR: '同步HOST失败',
-    BotErrorCode.BOT_INIT_ERROR: '初始化失败',
-    BotErrorCode.SYNC_ERROR: '同步失败',
-    BotErrorCode.SNAPSHOT_EXPIRED: '对话已经过期，需要重新登录'
+    BotErrorCode.MISSING_PARAMETER: u'参数不全',
+    BotErrorCode.UNKNOWN_COMMAND: u'对不起，您的命令不能识别。',
+    BotErrorCode.RESERVED_COMMAND: u'对不起，这是一个保留关键字。',
+    BotErrorCode.DUPLICATED_COMMAND: u'已经存在相同命令',
+    BotErrorCode.SEND_MSG_ERROR: u'发送消息失败',
+    BotErrorCode.LOGIN_ERROR: u'登录失败',
+    BotErrorCode.GET_UUID_ERROR: u'获取uuid失败',
+    BotErrorCode.SYNC_CHECK_ERROR: u'同步检查失败',
+    BotErrorCode.SYNC_HOST_CHECK_ERROR: u'同步HOST失败',
+    BotErrorCode.BOT_INIT_ERROR: u'初始化失败',
+    BotErrorCode.SYNC_ERROR: u'同步失败',
+    BotErrorCode.SNAPSHOT_EXPIRED: u'对话已经过期，需要重新登录'
 }
 
 

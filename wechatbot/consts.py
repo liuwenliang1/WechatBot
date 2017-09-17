@@ -5,7 +5,7 @@ RESERVED_COMMAND_LIST = ['help', ]
 
 UPLOAD_IMG_URL = 'https://sm.ms/api/upload'
 
-MSG = '{color}{content}{nc}'
+MSG = u'{color}{content}{nc}'
 
 RED = '\033[0;31m'
 GREEN = '\033[0;32m'
@@ -15,11 +15,13 @@ WECHAT_APP_ID = 'wx782c26e4c19acffb'
 WECHAT_FIRST_LOGIN_URL = 'https://login.weixin.qq.com/jslogin'
 WECHAT_QR_CODE_STRING = 'https://login.weixin.qq.com/l/{}'
 WECHAT_SECONT_LOGIN_URL = 'https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?tip={tip}&uuid={uuid}&_={now}'
-WECHAT_BOT_RUNNING = '机器人已经启动啦！你可以发送`ping`给机器人，机器人会回复哦。'
+WECHAT_CONTACT_URL = '{base_uri}/webwxgetcontact?pass_ticket={pass_ticket}&skey={skey}&r={now}'
+WECHAT_MSG_URL = '{base_uri}/webwxsendmsg?pass_ticket={pass_ticket}'
 WECHAT_BOT_SYNC_CHECK_URL = 'https://{sync_host}/cgi-bin/mmwebwx-bin/synccheck?{params}'
 WECHAT_BOT_SYNC_URL = '{base_uri}/webwxsync?sid={sid}&skey={skey}&lang=en_US&pass_ticket={pass_ticket}'
 WECHAT_INIT_URL = '{base_uri}/webwxinit?r={r}i&lang=en_US&pass_ticket={pass_ticket}'
 
+WECHAT_BOT_RUNNING = u'机器人已经启动啦！你可以发送`ping`给机器人，机器人会回复哦。'
 
 WECHAT_HEADERS = {
     'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',

@@ -4,10 +4,12 @@ from wechatbot import WechatBot
 
 class MyBot(WechatBot):
     def text_reply(self, msg):
-        if msg == 'ping':
+        if "ping" in msg:
             return 'pong'
 
 
 if __name__ == '__main__':
     bot = MyBot()
+    bot.login_wechat()
+    bot.get_all_contacts()
     bot.run()
