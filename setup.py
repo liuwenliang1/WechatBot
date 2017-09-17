@@ -34,7 +34,7 @@ setup(
     keywords="wechat bot chatops",
     packages=['wechatbot'],
     license='MIT',
-    url="https://github.com/chuanwu/WechatBot.py",
+    url="https://github.com/chuanwu/WechatBot",
     entry_points={"console_scripts": entry_points},
     install_requires=requires
 )
