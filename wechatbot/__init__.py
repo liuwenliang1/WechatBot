@@ -2,8 +2,11 @@
 import Queue
 from wechatbot.bot import WechatBot
 
-q = Queue.Queue()
+q = None
 
 
-def send_my_msg(content, user_name):
-    q.put(content + "$send_to$" + user_name)
+def get_msg_queue():
+    global q
+    if q is None:
+        q = Queue.Queue()
+    return q

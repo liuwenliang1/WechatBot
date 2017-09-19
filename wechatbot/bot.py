@@ -206,7 +206,8 @@ class WechatBot(object):
                 selector = pm.group(2)
                 return [retcode, selector]
             except requests.exceptions.ReadTimeout:
-                pass
+                import gevent
+                gevent.sleep(0)
             except:
                 raise BotServerException(BotErrorCode.SYNC_CHECK_ERROR)
 

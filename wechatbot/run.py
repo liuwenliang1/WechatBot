@@ -5,15 +5,21 @@ import Queue
 import gevent
 
 from tools import now
-from wechatbot import q
+from wechatbot import get_msg_queue
 from ping import MyBot
 
 
 bot = MyBot()
 
 
+def send_my_msg(content, user_name):
+    get_msg_queue().put(content + "$send_to$" + user_name)
+
+
 def worker():
     while True:
+        from msg import auto_msg
+        auto_msg()
         bot.sync_host_check()
         check_time = now()
         bot.sync_check()
@@ -31,11 +37,11 @@ def worker():
 def chat():
     while True:
         try:
-            msg = q.get(timeout=1)
+            msg = get_msg_queue().get(timeout=0.05)
+            content, username = msg.split("$send_to$")
+            bot.send_msg_to_friend(content, username)
         except Queue.Empty:
             gevent.sleep(0)
-        content, username = msg.split("$send_to$")
-        bot.send_msg_to_friend(content, username)
 
 
 if __name__ == '__main__':
