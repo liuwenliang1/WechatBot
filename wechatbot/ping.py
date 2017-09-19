@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from wechatbot import WechatBot
+from wechatbot import WechatBot, send_my_msg
 
 
 class MyBot(WechatBot):
@@ -7,8 +7,6 @@ class MyBot(WechatBot):
         if "ping" in msg:
             return 'pong'
 
-
-if __name__ == '__main__':
-    bot = MyBot()
-    bot.login_wechat()
-    bot.run()
+if __name__ == "__main__":
+    # 要发送的消息，填写你的微信名
+    send_my_msg("Hello", u"孙传武")

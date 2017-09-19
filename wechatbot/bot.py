@@ -4,11 +4,10 @@ import io
 import json
 import random
 import re
-import thread
-import time
 import urllib
 import pickle
 import xml.dom.minidom
+import Queue
 
 import qrcode
 import requests
@@ -31,6 +30,7 @@ from wechatbot.consts import (
     WECHAT_CONTACT_URL
 )
 
+q = Queue.Queue()
 directory = os.path.dirname(os.path.abspath(__file__))
 PKL_FILE = '{directory}/wechat.pkl'.format(directory=directory)
 
@@ -207,7 +207,6 @@ class WechatBot(object):
                 selector = pm.group(2)
                 return [retcode, selector]
             except requests.exceptions.ReadTimeout:
-                # This is a normal response. Just ignore this exception.
                 pass
             except:
                 raise BotServerException(BotErrorCode.SYNC_CHECK_ERROR)
@@ -246,20 +245,6 @@ class WechatBot(object):
         except Exception:
             raise BotServerException(BotErrorCode.SYNC_ERROR)
 
-    def proc_msg(self):
-
-        self.sync_host_check()
-
-        while True:
-            check_time = now()
-            self.sync_check()
-            msg = self.sync()
-            self.handle_msg(msg)
-            check_time = now() - check_time
-            if check_time < 1:
-                time.sleep(1 - check_time)
-            self.save_snapshot()
-
     def handle_msg(self, msgs):
         for msg in msgs["AddMsgList"]:
             if ':<br/>!' in msg['Content']:
@@ -287,8 +272,6 @@ class WechatBot(object):
             except Exception as e:
                 reply['Msg']['Content'] = 'error occurs: {}'.format(e)
                 self.send_msg(reply)
-            # send msg to someone
-            # self.send_msg_to_friend("Hello", u"桃子")
 
     def send_msg_to_friend(self, content, user_name):
 
@@ -318,14 +301,10 @@ class WechatBot(object):
         msg_id = str(now() * 1000) + str(random.random())[:5].replace('.', '')
         reply['Msg'].update({'LocalId': msg_id, 'ClientMsgId': msg_id})
         data = json.dumps(reply, ensure_ascii=False).encode('utf-8')
-        for i in range(5):
-            try:
-                r = self.session.post(url, data=data, headers=WECHAT_SEND_MSG_HEADER)
-            except (requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
-                pass
-            if r.status_code == 200:
-                return
-        raise BotServerException(BotErrorCode.SEND_MSG_ERROR)
+        try:
+            r = self.session.post(url, data=data, headers=WECHAT_SEND_MSG_HEADER)
+        except (requests.exceptions.ConnectTimeout, requests.exceptions.ReadTimeout):
+            pass
 
     def text_reply(self, msg):
         """
@@ -333,9 +312,6 @@ class WechatBot(object):
         :return:
         """
         pass
-
-    def call(self, msg):
-        return self.func(msg)
 
     @property
     def logger(self):
@@ -350,6 +326,3 @@ class WechatBot(object):
             self.login(using_snap_shot=False)
         self.logger.info(green_alert(WECHAT_BOT_RUNNING))
         self.get_all_contacts()
-
-    def run(self):
-        self.proc_msg()

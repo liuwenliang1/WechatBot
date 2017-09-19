@@ -28,7 +28,7 @@ WechatBot
 .. code-block:: python
 
     # -*- coding:utf-8 -*-
-    from wechatbot import WechatBot
+    from wechatbot import WechatBot, send_my_msg
 
 
     class MyBot(WechatBot):
@@ -36,13 +36,12 @@ WechatBot
             if "ping" in msg:
                 return 'pong'
 
-    if __name__ == '__main__':
-        bot = MyBot()
-        bot.login_wechat()
-        bot.run()
+    if __name__ == "__main__":
+        # 要发送的消息，填写你的微信名
+        send_my_msg("Hello", u"孙传武")
 
 
-扫描二维码之后，机器人就跑起来啦。
+写完你的代码之后，可以执行`make develop`，根据提示扫描二维码之后，机器人就跑起来啦。
 这时，可以向机器人发送一个ping的消息来看看服务是否正常。
 对了，短暂退出不需要重新扫描二维码登录哦～
 
@@ -55,7 +54,7 @@ WechatBot
 - 在接受指令之后发送定制消息 [done]
 
 
-- 主动向某个用户发送消息 [pending]
+- 主动向某个用户发送消息 [done]
 
 
 谢谢阅读！
