@@ -212,8 +212,8 @@ class WechatBot(object):
                 raise BotServerException(BotErrorCode.SYNC_CHECK_ERROR)
 
     def sync_host_check(self):
-        for host1 in ['webpush.', 'webpush2.']:
-            self.params['sync_host'] = host1 + self.params['base_host']
+        for host in ['webpush.', 'webpush2.']:
+            self.params['sync_host'] = host + self.params['base_host']
             try:
                 code, selector = self.sync_check()
                 if code == '0':

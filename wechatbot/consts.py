@@ -19,7 +19,7 @@ WECHAT_CONTACT_URL = '{base_uri}/webwxgetcontact?pass_ticket={pass_ticket}&skey=
 WECHAT_MSG_URL = '{base_uri}/webwxsendmsg?pass_ticket={pass_ticket}'
 WECHAT_BOT_SYNC_CHECK_URL = 'https://{sync_host}/cgi-bin/mmwebwx-bin/synccheck?{params}'
 WECHAT_BOT_SYNC_URL = '{base_uri}/webwxsync?sid={sid}&skey={skey}&lang=en_US&pass_ticket={pass_ticket}'
-WECHAT_INIT_URL = '{base_uri}/webwxinit?r={r}i&lang=en_US&pass_ticket={pass_ticket}'
+WECHAT_INIT_URL = '{base_uri}/webwxinit?r={r}&pass_ticket={pass_ticket}'
 
 WECHAT_BOT_RUNNING = u'机器人已经启动啦！你可以发送`ping`给机器人，机器人会回复哦。'
 

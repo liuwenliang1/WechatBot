@@ -8,7 +8,6 @@ from tools import now
 from wechatbot import q
 from ping import MyBot
 
-
 bot = MyBot()
 
 
@@ -31,14 +30,14 @@ def worker():
 def chat():
     while True:
         try:
-            msg = q.get(timeout=1)
+            bot.send_msg_to_friend("hello", u"yo")
+            # msg = q.get(timeout=1)
+            # content, username = msg.split("$send_to$")
+            # bot.send_msg_to_friend(content, username)
         except Queue.Empty:
             gevent.sleep(0)
-        content, username = msg.split("$send_to$")
-        bot.send_msg_to_friend(content, username)
 
 
 if __name__ == '__main__':
     bot.login_wechat()
     gevent.joinall([gevent.spawn(worker), gevent.spawn(chat)])
-
