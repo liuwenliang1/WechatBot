@@ -22,7 +22,7 @@ requires = [
     "pytest==3.0.7",
     "enum34==1.1.6",
     "gevent==1.2.2",
-    "requests==2.7.0"
+    "requests==2.20.0"
 ]
 
 setup(
