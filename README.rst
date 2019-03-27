@@ -10,7 +10,7 @@ WechatBot
 0. deprecated
 ===================
 
-`ItChat <https://github.com/littlecodersh/ItChat>`_ 是一个更为优秀的轮子。该项目已经废弃，请使用ItChat。
+`ItChat <https://github.com/littlecodersh/ItChat>`_ 是一个更为优秀的轮子，没必要再继续画蛇添足。该项目已经废弃，请使用ItChat。
 对此带来的不便，请谅解。
 
 =====================
