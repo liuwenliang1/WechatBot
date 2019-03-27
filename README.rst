@@ -6,10 +6,12 @@ WechatBot
 
 *WechatBot* is a wechat bot built for geeks.
 
-[deprecated]
+===================
+0. deprecated
+===================
 
-[ItChat](https://github.com/littlecodersh/ItChat)是一个更为优秀的轮子。该项目已经废弃，请移至ItChat。
-
+`ItChat <https://github.com/littlecodersh/ItChat>`_ 是一个更为优秀的轮子。该项目已经废弃，请使用ItChat。
+对此带来的不便，请谅解。
 
 =====================
  1. 快速上手
