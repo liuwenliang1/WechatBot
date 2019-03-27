@@ -6,6 +6,11 @@ WechatBot
 
 *WechatBot* is a wechat bot built for geeks.
 
+[deprecated]
+
+[ItChat](https://github.com/littlecodersh/ItChat)是一个更为优秀的轮子。该项目已经废弃，请移至ItChat。
+
+
 =====================
  1. 快速上手
 =====================
@@ -49,7 +54,7 @@ WechatBot
 - 在接受指令之后发送定制消息 [done]
 
 
-- 主动向某个用户发送消息 [doing]
+- 主动向某个用户发送消息 [done]
 
 
 谢谢阅读！
